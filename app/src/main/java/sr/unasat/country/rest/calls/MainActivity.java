@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,12 +26,14 @@ import java.util.Map;
 
 import sr.unasat.country.rest.calls.dto.CountryDto;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private TextView mTextView;
     private TextView landTextView;
     private EditText landNaamEditText;
     private String ALL_COUNTRIES;
+    private Spinner spinner;
+    List<String> landen ;
 
     public MainActivity() {
     }
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.text);
         landTextView = (TextView) findViewById(R.id.landTextView);
         landNaamEditText = (EditText) findViewById(R.id.landNaamEditText);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
     }
 
     public void onSearchCountry(View view) {
@@ -66,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         List<CountryDto> countryDto = mapJsonToCountryObject(response);
 
+                        ArrayList<String> landen = new ArrayList<>();
+                        for(CountryDto country: countryDto){
+                            landen.add(country.getName());
+                        }
+
+                         //Creating adapter for spinner
+                        ArrayAdapter<String> adapter =
+                                new ArrayAdapter<String>(getApplicationContext(),  android.R.layout.simple_spinner_dropdown_item, landen);
+                        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+
+                        spinner.setAdapter(adapter);
 
                         String messageText = countryDto.toString().trim()
                                 .replace("[Country:", "Land gegevens")
