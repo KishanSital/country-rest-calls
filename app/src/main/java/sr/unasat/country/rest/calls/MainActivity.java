@@ -79,10 +79,9 @@ public class MainActivity extends AppCompatActivity  {
 
                          //Creating adapter for spinner
                         ArrayAdapter<String> adapter =
-                                new ArrayAdapter<String>(getApplicationContext(),  android.R.layout.simple_spinner_dropdown_item, landen);
+                                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, landen);
                         adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
 
-                        spinner.setAdapter(adapter);
 
                         String messageText = countryDto.toString().trim()
                                 .replace("[Country:", "Land gegevens")
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
                         landTextView.setText(messageText);
+                        spinner.setAdapter(adapter);
                         System.out.println(countryDto);
 
 
