@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -96,9 +97,16 @@ public class MainActivity extends AppCompatActivity  {
                         // als ik eentje select moet gegevens dan ervan tevoorschijn komen
 
 
-                        landTextView.setText(messageText);
                         spinner.setAdapter(adapter);
-                        System.out.println(countryDto);
+                        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                           @Override
+                                                           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                                               landTextView.setText(messageText);
+
+                                                           }
+                                                       });
+                                System.out.println(countryDto);
 
 
                     }
