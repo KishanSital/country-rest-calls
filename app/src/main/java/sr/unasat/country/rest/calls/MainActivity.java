@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity  {
     private EditText landNaamEditText;
     private String ALL_COUNTRIES;
     private Spinner spinner;
-    List<String> landen ;
+    private ArrayList<String> landen ;
 
     public MainActivity() {
     }
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity  {
         mTextView = (TextView) findViewById(R.id.text);
         landTextView = (TextView) findViewById(R.id.landTextView);
         landNaamEditText = (EditText) findViewById(R.id.landNaamEditText);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
 
     }
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
                     public void onResponse(String response) {
                         List<CountryDto> countryDto = mapJsonToCountryObject(response);
 
-                        ArrayList<String> landen = new ArrayList<>();
+                         landen = new ArrayList<>();
                         for(CountryDto country: countryDto){
                             landen.add(country.getName());
                         }
