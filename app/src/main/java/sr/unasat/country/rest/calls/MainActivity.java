@@ -2,6 +2,7 @@ package sr.unasat.country.rest.calls;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,8 +19,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.Map;
 
 import sr.unasat.country.rest.calls.dto.CountryDto;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextView mTextView;
     private TextView landTextView;
@@ -35,6 +34,11 @@ public class MainActivity extends AppCompatActivity  {
     private String ALL_COUNTRIES;
     private Spinner spinner;
     private ArrayList<String> landen ;
+    private String messageText;
+    private List<CountryDto> countryDto;
+    private TextView land;
+    private TextView hoofdstad;
+    private TextView regio;
 
     public MainActivity() {
     }
@@ -47,6 +51,11 @@ public class MainActivity extends AppCompatActivity  {
         landTextView = (TextView) findViewById(R.id.landTextView);
         landNaamEditText = (EditText) findViewById(R.id.landNaamEditText);
         spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+         land = (TextView) findViewById(R.id.landTextView);
+         hoofdstad = (TextView) findViewById(R.id.HoofdstadTextView);
+         regio = (TextView) findViewById(R.id.RegioTextView);
+
 
     }
 
@@ -69,14 +78,17 @@ public class MainActivity extends AppCompatActivity  {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, ALL_COUNTRIES ,
                 new Response.Listener<String>() {
+                    @SuppressLint("WrongConstant")
                     @Override
                     public void onResponse(String response) {
-                        List<CountryDto> countryDto = mapJsonToCountryObject(response);
 
-                         landen = new ArrayList<>();
+                       countryDto = mapJsonToCountryObject(response);
+
+                        landen = new ArrayList<>();
                         for(CountryDto country: countryDto){
                             landen.add(country.getName());
                         }
+
 
                          //Creating adapter for spinner
                         ArrayAdapter<String> adapter =
@@ -84,7 +96,7 @@ public class MainActivity extends AppCompatActivity  {
                         adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
 
 
-                        String messageText = countryDto.toString().trim()
+                         messageText = countryDto.toString().trim()
                                 .replace("[Country:", "Land gegevens")
                                 .replace("Name=", "Naam = ")
                                 .replace("Capital=", "Hoofdstad = ")
@@ -92,21 +104,15 @@ public class MainActivity extends AppCompatActivity  {
                                 .replace("]", "")
                                 .replace("--------------------------------","");
 
+
+
                         // dit zou eigenlijk dan in een combobox moeten komen als ik
                         //niet invoer en search dan moeten alle landen in die combobox comen
                         // als ik eentje select moet gegevens dan ervan tevoorschijn komen
 
 
                         spinner.setAdapter(adapter);
-                        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                           @Override
-                                                           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                                               landTextView.setText(messageText);
-
-                                                           }
-                                                       });
-                                System.out.println(countryDto);
+                        System.out.println(countryDto);
 
 
                     }
@@ -143,4 +149,20 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if ( ! landNaamEditText.getText().toString().isEmpty() || landNaamEditText.getText() != null){
+            if (countryDto.size() == 1){
+                land.setText(countryDto.get(0).getName());
+                hoofdstad.setText(countryDto.get(0).getCapital());
+                regio.setText(countryDto.get(0).getRegion());
+            }
+        } else {
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        mTextView.setText("Selecteer a.u.b een item uit de lijst");
+    }
 }
