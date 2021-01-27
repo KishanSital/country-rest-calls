@@ -75,8 +75,14 @@ public class MainActivity extends AppCompatActivity {
                                 .replace("]", "")
                                 .replace("--------------------------------","");
 
+                        // dit zou eigenlijk dan in een combobox moeten komen als ik
+                        //niet invoer en search dan moeten alle landen in die combobox comen
+                        // als ik eentje select moet gegevens dan ervan tevoorschijn komen
+
+
                         landTextView.setText(messageText);
                         System.out.println(countryDto);
+
 
                     }
                 }, new Response.ErrorListener() {
