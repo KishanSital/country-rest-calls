@@ -38,12 +38,10 @@ public class CountryDto {
         this.region = region;
     }
 
+
+
     @Override
     public String toString() {
-        return  "Country:"+ "\n" +
-                "Name= " + name + "\n" +
-                "Capital= " + capital + "\n" +
-                "Region= " + region + "\n" +
-                "--------------------------------" + "\n";
+        return   name;
     }
 }

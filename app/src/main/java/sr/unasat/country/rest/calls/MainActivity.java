@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private EditText landNaamEditText;
     private String ALL_COUNTRIES;
     private Spinner spinner;
-    private ArrayList<String> landen ;
     private String messageText;
     private List<CountryDto> countryDto;
     private TextView land;
@@ -83,18 +82,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     public void onResponse(String response) {
 
                        countryDto = mapJsonToCountryObject(response);
-
-                        landen = new ArrayList<>();
-                        for(CountryDto country: countryDto){
-                            landen.add(country.getName());
-                        }
-
-
                          //Creating adapter for spinner
-                        ArrayAdapter<String> adapter =
-                                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, landen);
+                        ArrayAdapter<CountryDto> adapter =
+                                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, countryDto);
                         adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
 
+                        if (countryDto.size() == 1){
+                            land.setText(countryDto.get(0).getName());
+                            hoofdstad.setText(countryDto.get(0).getCapital());
+                            regio.setText(countryDto.get(0).getRegion());
+                        }
 
                          messageText = countryDto.toString().trim()
                                 .replace("[Country:", "Land gegevens")
@@ -151,14 +148,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if ( ! landNaamEditText.getText().toString().isEmpty() || landNaamEditText.getText() != null){
-            if (countryDto.size() == 1){
-                land.setText(countryDto.get(0).getName());
-                hoofdstad.setText(countryDto.get(0).getCapital());
-                regio.setText(countryDto.get(0).getRegion());
-            }
-        } else {
-        }
+        CountryDto c = (CountryDto) spinner.getSelectedItem();
+        land.setText(c.getName());
+        hoofdstad.setText(c.getCapital());
+        regio.setText(c.getRegion());
     }
 
     @Override
