@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             regio.setText(countryDto.get(0).getRegion());
                         }
 
+
+
                          messageText = countryDto.toString().trim()
                                 .replace("[Country:", "Land gegevens")
                                 .replace("Name=", "Naam = ")
